@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overture research brief</title>
+<meta name="description" content="The papers behind Overture's matching score, disclosure gate and negotiation design, and what we took from each.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #f4efe6; --card: #fffdf8; --ink: #17140f; --ink-2: #4a443a; --muted: #8a8274; --line: #e2d9c8; --accent: #ff5a36; --lock: #6b4fd8; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #14120e; --card: #1e1b16; --ink: #f4efe6; --ink-2: #cfc6b5; --muted: #8f8778; --line: #34302a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16.5px/1.62 Inter, system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 56px 16px 96px; }
+  .label { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 400 clamp(40px, 7vw, 62px)/1 "Instrument Serif", serif; letter-spacing: -.02em; margin: 14px 0 18px; }
+  h1 em, h2 em { color: var(--accent); }
+  h2 { font: 400 32px/1.1 "Instrument Serif", serif; margin: 48px 0 12px; }
+  p, li { color: var(--ink-2); }
+  .paper { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
+  .paper .t { font-weight: 600; color: var(--ink); }
+  .paper .m { font-size: 13px; color: var(--muted); margin: 2px 0 8px; }
+  .paper .took { border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 8px; font-size: 14.5px; }
+  .paper .took b { color: var(--accent); font: 500 11px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; margin-right: 6px; }
+  pre { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; overflow-x: auto; font: 13.5px/1.5 "JetBrains Mono", monospace; }
+  a { color: var(--ink); }
+  .tbl { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); font-size: 14.5px; min-width: 560px; }
+  th, td { text-align: left; padding: 9px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--ink); color: var(--paper); font: 500 11px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<main>
+  <div class="label">Overture · research brief · Paras Adlakha &amp; Harshita Adlakha · 7 Nov 2026</div>
+  <h1>What the research says about <em>agents that introduce people</em>.</h1>
+  <p>Three questions shaped Overture. Who should meet? What may an agent say for you? And how do two agents reach a decision? For each, we used the strongest evidence we could find, mostly peer-reviewed and highly cited, plus 2025–26 preprints where the field is too new for journals. Every design choice in the code points back to one of these.</p>
+
+  <h2>1 · Who should meet: <em>moderately weak ties</em>, both ways</h2>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/c18e430d018c5d9eab8c77dd288789da/">A causal test of the strength of weak ties</a></div>
+    <div class="m">Rajkumar, Saint-Jacques, Bojinov, Brynjolfsson, Aral · <i>Science</i> 2022 · ~200 citations</div>
+    Multiple randomised experiments on LinkedIn's People You May Know, covering 20M+ people over 5 years, with 2B new ties and 600,000 new jobs. Weak ties increased job mobility, but non-linearly: an inverted U, where moderately weak ties helped most and the returns diminished beyond that. Weak ties mattered more in digital industries.
+    <div class="took"><b>Took</b>Unexpectedness enters the score through <code>bridge(u)</code>, an inverted U peaking at u = 0.65, not at maximum strangeness. This crowd is about as digital as an industry gets, which is where the paper found weak ties mattered most.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/69d8d51d066a5a2fab8a5ffc1fe69bf1/">Beyond accuracy: evaluating recommender systems by coverage and serendipity</a></div>
+    <div class="m">Ge, Delgado-Battenfeld, Jannach · RecSys 2010 · ~790 citations</div>
+    Serendipity combines unexpectedness with usefulness. An unexpected but irrelevant recommendation isn't serendipitous.
+    <div class="took"><b>Took</b>Unexpectedness only <i>multiplies</i> relevance: <code>score = reciprocity × (0.55 + 0.45 × bridge(u))</code>. A pair with nothing to offer each other scores 0, however surprising.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/315638cb50cc564aa8739af925cc2d57/">Serendipity in Recommender Systems: A Systematic Literature Review</a></div>
+    <div class="m">Ziarani &amp; Ravanmehr · J. Computer Science and Technology 2021 · ~115 citations</div>
+    Over-emphasising accuracy leads to over-specialised, predictable recommendations. Serendipity's advantage over plain novelty or diversity is that it stays useful.
+    <div class="took"><b>Took</b>The ranker scores <i>unexpected</i> separately from fit, and shows both on every intro, so people can see why a stranger was suggested.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/a3ebf08e2d1f50b28cd0bc641bca9af3/">Knowledge substitutability and complementarity in scientific collaboration</a></div>
+    <div class="m">Lin et al. · <i>Journal of Informetrics</i> 2025</div>
+    Using the American Physical Society dataset: overlapping (substitutable) knowledge lowers performance, while complementary knowledge raises it, especially in small teams.
+    <div class="took"><b>Took</b>Fit is <i>my needs × your offers</i>, not shared interests. Reciprocity is the geometric mean of the two directions, so a one-sided intro (a recruiter who only takes) scores low.</div></div>
+
+  <h2>2 · What an agent may say: <em>contextual integrity</em>, enforced outside the model</h2>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/e459f0566b605f4f87104c414abe3743/">CI-Work: Benchmarking Contextual Integrity in Enterprise LLM Agents</a></div>
+    <div class="m">Fu et al. · arXiv 2026</div>
+    Frontier agents violated contextual integrity in 15.8–50.9% of enterprise workflows, with leakage up to 26.7%. Higher task utility often came with more violations, and bigger models or deeper reasoning didn't fix it. The authors call for context-centric architectures.
+    <div class="took"><b>Took</b>The gate is plain code that runs on every outgoing message whatever the model, and the eval measures leaks with the gate off and on.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/a8bc2bdf4c145f3ca830514b902d9727/">OCELOT: Inference-Leakage Budgets for Privacy-Preserving LLM Agents</a></div>
+    <div class="m">Xie et al. · arXiv 2026</div>
+    Agent privacy is a property of the whole trajectory: leakage is cumulative, bidirectional (injection turns the agent against its user) and task-dependent. OCELOT puts a deterministic verifier and a ledger next to an untrusted model.
+    <div class="took"><b>Took</b>The same split: the model proposes and a deterministic gate decides. Blocked attempts go to <code>ov_gate_log</code>, which stores the rule and the item but never the blocked text. Inbound messages are framed as data, and injection patterns are flagged to the receiving agent.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/ae6ddaeca180521887409bb3df9f13b5/">Contextual Integrity in LLMs via Reasoning and Reinforcement Learning</a></div>
+    <div class="m">Lan et al. · arXiv 2025 · ~60 citations</div>
+    Asking models to reason explicitly about what is appropriate to share cuts inappropriate disclosure; RL on about 700 synthetic examples improves it further and transfers to PrivacyLens.
+    <div class="took"><b>Took</b>The agent prompt lists every item with its policy (share, after both accept, never) and its id, and says what each means. The prompt is the first line of defence, and the gate is the backstop.</div></div>
+
+  <h2>3 · How two agents decide: short, <em>scored</em> negotiation</h2>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/33c8582d417f58299a394c2b607f81d1/">LLM-Deliberation: Evaluating LLMs with Interactive Multi-Agent Negotiation Games</a></div>
+    <div class="m">Abdelnabi et al. · 2023 (NeurIPS 2024 D&amp;B) · ~75 citations</div>
+    Multi-issue negotiation games show that agents can reach deals, but greedy or adversarial players change the dynamics.
+    <div class="took"><b>Took</b>An adversarial persona (Recruiter Bot) lives in the demo room and tries to extract salaries, visa status and runway from every agent.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/bb0373ad6d865396be09ab3f43ace0f4/">AgenticPay: A Multi-Agent LLM Negotiation System for Buyer-Seller Transactions</a></div>
+    <div class="m">Liu et al. · arXiv 2026</div>
+    Agents with private constraints negotiating in language show large performance gaps, especially in long-horizon reasoning.
+    <div class="took"><b>Took</b>Negotiations are capped at four messages of at most 60 words each, followed by a mediator verdict. Short horizons are cheaper and more reliable, and easier for people to read.</div></div>
+  <div class="paper"><div class="t"><a href="https://consensus.app/papers/details/d0d3441b117b577ca2ebf3a97e345dcd/">Towards understanding the characteristics of successful and unsuccessful collaborations</a></div>
+    <div class="m">Love et al. · Humanities &amp; Social Sciences Communications 2022</div>
+    Team success is less about picking the right people than about building relationships for knowledge integration.
+    <div class="took"><b>Took</b>The output isn't a match score. It's a reason, what each person gets, and a concrete 15-minute agenda, so the first meeting starts the relationship.</div></div>
+
+  <h2>The score, in one line</h2>
+<pre>reciprocity = sqrt(helps_me × i_help)               // both directions; one-sided → low
+bridge(u)   = max(0, 1 − ((u − 0.65) / 0.65)²)        // inverted U, peak at moderate distance
+score       = reciprocity × (0.55 + 0.45 × bridge(u))  // unexpectedness multiplies, never rescues</pre>
+
+  <h2>The gate, in four rules</h2>
+  <div class="tbl"><table>
+    <tr><th>Rule</th><th>Blocks</th><th>Example</th></tr>
+    <tr><td><code>phrase_overlap</code></td><td>Three content words in a row from a protected item</td><td>"months of runway left"</td></tr>
+    <tr><td><code>distinctive_token</code></td><td>A standalone number, amount, name or acronym found only in a protected item</td><td>"$800k", "Nvidia", "O-1"</td></tr>
+    <tr><td><code>contact_detail</code></td><td>Emails, phone numbers and links before both people accept</td><td>"sam@…", "calendly.com/…"</td></tr>
+    <tr><td><code>declared_use</code></td><td>The model declares it used a protected item (available for audits)</td><td>uses: ["f1"]</td></tr>
+  </table></div>
+  <p>The gate's first response to a hit is a rewrite: the model is told which rule fired, but not the secret. If the rewrite fails the gate too, the message is replaced with a fixed line. Twenty-one unit tests cover the rules, the false positives we found (such as "15 minutes" against "O-1"), the rewrite and redaction paths, injection flags, and the intro releasing <i>after both accept</i> items but never <i>never</i> items.</p>
+  <p><a href="market-brief.html">Market brief</a> · <a href="app/">Live app</a> · <a href="https://github.com/ParasAdlakha/overture">Code</a></p>
+</main>
+</body>
+</html>

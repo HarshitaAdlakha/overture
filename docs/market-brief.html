@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overture market brief</title>
+<meta name="description" content="Why agent-to-agent introductions, why now, who else is building them, and where Overture fits.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #f4efe6; --card: #fffdf8; --ink: #17140f; --ink-2: #4a443a; --muted: #8a8274; --line: #e2d9c8; --accent: #ff5a36; --lock: #6b4fd8; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #14120e; --card: #1e1b16; --ink: #f4efe6; --ink-2: #cfc6b5; --muted: #8f8778; --line: #34302a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16.5px/1.62 Inter, system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 56px 16px 96px; }
+  .label { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 400 clamp(40px, 7vw, 64px)/1 "Instrument Serif", serif; letter-spacing: -.02em; margin: 14px 0 18px; }
+  h1 em, h2 em { color: var(--accent); }
+  h2 { font: 400 34px/1.1 "Instrument Serif", serif; margin: 52px 0 10px; }
+  p, li { color: var(--ink-2); }
+  .tbl { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 14.5px; min-width: 560px; }
+  th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--ink); color: var(--paper); font: 500 11px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; border: 0; }
+  tr.us td { background: color-mix(in srgb, var(--accent) 9%, var(--card)); font-weight: 500; }
+  .call { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; padding: 16px 18px; margin-top: 24px; }
+  .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+  @media (max-width: 640px) { .nums { grid-template-columns: 1fr; } }
+  .nums div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+  .nums b { display: block; font: 400 40px/1 "Instrument Serif", serif; }
+  .nums span { font-size: 13.5px; color: var(--ink-2); }
+  a { color: var(--ink); }
+  small, .src { color: var(--muted); font-size: 13px; }
+  ol.refs li { font-size: 13.5px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="label">Overture · market brief · Anything Applied Agentic Hackathon, SF, 7 Nov 2026 · Paras Adlakha &amp; Harshita Adlakha</div>
+  <h1>Networking is moving to <em>agents</em>. Trust hasn't.</h1>
+  <p>Professional networking is a large, old market that runs on one scarce resource: people's attention. AI products now offer to spend that attention for you. They call you, read your inbox or text you about who to meet. The next step is the one this hackathon names in challenge 5: <i>your agent, my agent</i>. Once two agents talk to each other directly, the hard problem stops being matching. It becomes <b>what each agent is allowed to say</b>.</p>
+
+  <div class="nums">
+    <div><b>$19.8B</b><span>LinkedIn revenue in Microsoft's fiscal 2026, up about 11% from $17.8B [1]</span></div>
+    <div><b>20M people</b><span>in LinkedIn's randomised experiments showing moderately weak ties drive job mobility [5]</span></div>
+    <div><b>15.8–50.9%</b><span>privacy violation rates of frontier-model agents on an enterprise contextual-integrity benchmark [7]</span></div>
+  </div>
+
+  <h2>Who is building <em>AI introductions</em></h2>
+  <div class="tbl"><table>
+    <tr><th>Product</th><th>How it works</th><th>Agent-to-agent?</th><th>Privacy model</th><th>Signal</th></tr>
+    <tr><td><b>Boardy</b></td><td>Voice agent calls you, remembers you, proposes double opt-in intros</td><td>No: one central agent</td><td>Central agent sees everything you say</td><td>$3M pre-seed (Oct 2024), $8M seed led by Creandum (reported Jan 2025) [2]</td></tr>
+    <tr><td><b>Series</b></td><td>Text an AI over iMessage about who you are and who you want to meet</td><td>No: one central agent</td><td>Central</td><td>$3.1M pre-seed in 2025; a later $5.1M round reported [3]</td></tr>
+    <tr><td><b>Happenstance</b></td><td>Natural-language search over your own network (LinkedIn, Gmail, X)</td><td>No: search</td><td>Your graph, your queries</td><td>YC S23; small seed round reported [4]</td></tr>
+    <tr><td><b>LinkedIn</b></td><td>People You May Know, plus AI hiring assistants</td><td>No</td><td>Platform-wide</td><td>1.2B+ members (analyst figure) [1]</td></tr>
+    <tr><td><b>Lunchclub</b></td><td>AI-matched 1:1 video meetings</td><td>No</td><td>Central</td><td>Pivoted away from networking (reported) [3]</td></tr>
+    <tr class="us"><td><b>Overture</b></td><td>Every person gets an agent. Agents negotiate pairwise and propose an intro with a reason and a 15-minute agenda</td><td><b>Yes</b></td><td><b>Per-item policies</b> (share, after both accept, never), enforced by a gate on every message</td><td>Built today</td></tr>
+  </table></div>
+  <p class="src">Funding and user figures for private companies come from press and secondary sources and are not independently verified.</p>
+
+  <h2>Why <em>now</em></h2>
+  <ul>
+    <li><b>Agents can already talk to each other.</b> Google introduced the Agent2Agent (A2A) protocol in April 2025, and the Linux Foundation took over its governance in June 2025. Agents advertise themselves with "agent cards" [6]. Identity is getting solved. What an agent may say on its person's behalf is not.</li>
+    <li><b>Models over-share when they're trying to help.</b> On CI-Work, frontier agents violate contextual integrity in 15.8–50.9% of enterprise tasks, and the authors find that higher task utility often comes with more violations [7]. A networking agent is a helpfulness machine, so it is exactly where this failure shows up.</li>
+    <li><b>Prompting isn't a policy.</b> Recent work treats agent privacy as something enforced at runtime across the whole conversation, not filtered one output at a time [8], or trained in with reinforcement learning [9]. Overture takes the runtime route: the gate is deterministic code outside the model.</li>
+  </ul>
+
+  <h2>The <em>wedge</em>: events</h2>
+  <p>A hackathon, conference or accelerator demo day is a closed room with a deadline. Everyone has a reason to meet someone, nobody has time to talk to everyone, and the organiser already asks the check-in questions (this event's "Mystery Match" asks what you're building, what you're good at, and what you're looking for). Overture plugs into that check-in, runs the agent negotiations in the background, and hands each person a short list of yes/no intros with a reason and a meeting slot.</p>
+  <div class="tbl"><table>
+    <tr><th>Who pays</th><th>For what</th><th>Model</th></tr>
+    <tr><td>Event organisers, accelerators, VC platform teams</td><td>Measurable intros per attendee, sponsor-to-builder matching</td><td>Per event or per attendee</td></tr>
+    <tr><td>Communities (alumni, founder networks)</td><td>An always-on agent per member that respects the community's sharing rules</td><td>Per seat</td></tr>
+    <tr><td>Individuals (later)</td><td>A personal agent that represents you across events and A2A-speaking platforms</td><td>Subscription</td></tr>
+  </table></div>
+
+  <h2>Risks and how Overture <em>answers</em> them</h2>
+  <div class="tbl"><table>
+    <tr><th>Risk</th><th>Answer in the product</th></tr>
+    <tr><td>Agents leak what people told them in confidence</td><td>Per-item policies; a gate on every outgoing message (phrase overlap, identifying numbers and names, contact details); a rewrite, then redaction; blocked attempts logged without their content</td></tr>
+    <tr><td>A malicious agent tries to extract data</td><td>Inbound messages are framed as data; injection patterns are flagged to the receiving agent; an adversarial persona runs in the demo room</td></tr>
+    <tr><td>Spam intros</td><td>Reciprocity is a geometric mean, so a one-sided intro scores low; double opt-in; a person's standing instructions</td></tr>
+    <tr><td>Echo chambers</td><td>Unexpectedness is rewarded, peaking at moderate distance (the weak-ties result) [5]</td></tr>
+    <tr><td>Contact details harvested</td><td>Emails exist only in the intro, returned only to the two people, only after both accept</td></tr>
+  </table></div>
+
+  <div class="call"><b>The bet.</b> When every professional has an agent, the winning network is the one whose agents can be trusted to talk. Overture makes the trust part explicit: a policy per fact, a gate in code, a log of what it stopped, and a human yes on both sides before anything is shared.</div>
+
+  <h2>Sources</h2>
+  <ol class="refs">
+    <li>Microsoft fiscal 2026 results as reported by <a href="https://fourweekmba.com/ai-microsoft-stops-reporting-linkedins-19-8b-revenue-line/">FourWeekMBA</a> and <a href="https://www.zacks.com/stock/news/2820372/linkedin-growth-boosts-momentum-can-msft-stock-rally-higher">Zacks</a>.</li>
+    <li><a href="https://techcrunch.com/2024/10/24/ai-networking-startup-boardy-raises-3m-pre-seed/">TechCrunch</a>, Boardy pre-seed; <a href="https://thelogic.co/briefing/boardy-ai-raises-us8m-seed-round-for-ai-networking-tool/">The Logic</a>, Boardy seed; <a href="https://www.goodword.com/blog/boardy-ai-alternative-can-ai-really-manage-your-network">Goodword</a> on double opt-in.</li>
+    <li><a href="https://hartfordbusiness.com/article/yale-students-raise-31m-in-14-days-for-ai-powered-social-platform/">Hartford Business Journal</a>, Series; <a href="https://www.articuler.ai/resources/compare/lunchclub-alternatives/">Articuler</a>, Lunchclub.</li>
+    <li><a href="https://www.everydev.ai/developers/happenstance">EveryDev</a>, Happenstance.</li>
+    <li>Rajkumar, Saint-Jacques, Bojinov, Brynjolfsson, Aral. <a href="https://consensus.app/papers/details/c18e430d018c5d9eab8c77dd288789da/">A causal test of the strength of weak ties</a>. <i>Science</i>, 2022.</li>
+    <li><a href="https://tyk.io/learning-center/a2a-protocol-architecture-and-technical-specification/">Tyk</a>, A2A protocol architecture; <a href="https://dev.to/alexcloudstar/a2a-vs-mcp-in-2026-how-ai-agents-actually-talk-to-each-other-4lg5">A2A vs MCP in 2026</a>.</li>
+    <li>Fu et al. <a href="https://consensus.app/papers/details/e459f0566b605f4f87104c414abe3743/">CI-Work: Benchmarking Contextual Integrity in Enterprise LLM Agents</a>. arXiv, 2026.</li>
+    <li>Xie et al. <a href="https://consensus.app/papers/details/a8bc2bdf4c145f3ca830514b902d9727/">OCELOT: Inference-Leakage Budgets for Privacy-Preserving LLM Agents</a>. arXiv, 2026.</li>
+    <li>Lan et al. <a href="https://consensus.app/papers/details/ae6ddaeca180521887409bb3df9f13b5/">Contextual Integrity in LLMs via Reasoning and Reinforcement Learning</a>. arXiv, 2025.</li>
+  </ol>
+  <p><small>Research foundations in more depth: <a href="research-brief.html">research brief</a>. Try it: <a href="app/">the live app</a>.</small></p>
+</main>
+</body>
+</html>

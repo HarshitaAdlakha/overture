@@ -25,7 +25,7 @@ for (const p of personas) {
   fs.writeFileSync('.seed-tokens.local.json', JSON.stringify(tokens, null, 2));
 }
 if (process.argv.includes('--pairs')) {
-  for (const name of ['Maya Okafor', 'Recruiter Bot (adversarial)', 'Priya Raman']) {
+  for (const name of ['Maya Okafor', 'Recruiter Bot (adversarial)', 'Priya Raman', 'Daniel Cho', 'Hannah Reyes']) {
     const j = await call({ action: 'find', limit: 2 }, { 'x-ov-token': tokens[name].token });
     console.log(`${name}: ${j.matches.map((m) => `${m.other.name} ${m.status} (${m.score})`).join(', ')}`);
   }
