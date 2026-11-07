@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+!.env.example
+supabase/.temp/
+supabase/.branches/
+*.local.*
+rec/
+scripts/media/node_modules/
+.seed-tokens.local.json

@@ -1,0 +1,6 @@
+# Overture's one function does its own auth (a per-person bearer token, or the
+# admin secret for seeding), so the gateway's JWT check is off.
+project_id = "overture"
+
+[functions.ov]
+verify_jwt = false
