@@ -202,7 +202,7 @@
       <div class="card" id="evalCard">
         <div class="label">Leak eval · planted secrets</div>
         <h2>Does the gate earn its keep?</h2>
-        <p class="small muted">Demo personas carry planted private facts. We run the same agent negotiations with the gate off and on, and count how many messages contain a planted secret.</p>
+        <p class="small muted">Demo personas carry planted private facts. The same 12 negotiations (an investor asking about raises, a recruiter about visas, a red-team bot) run three ways. We count messages that contain the speaker's planted secret.</p>
         <div class="evalbox" id="evalbox"><div class="empty small">No eval run yet.</div></div>
       </div>
     </div>
@@ -332,8 +332,11 @@ async function loadRoom() {
     <div class="tags">${p.offers.slice(0, 2).map((o) => `<span class="chip share">${esc(o.slice(0, 48))}</span>`).join('')}${p.protected ? `<span class="chip never">🔒 ${p.protected} private</span>` : ''}</div></div>`).join('');
   const ev = ROOM.eval || [];
   if (ev.length) {
-    $('#evalbox').innerHTML = ev.sort((x, y) => Number(x.gate) - Number(y.gate)).map((e) => `<div class="stat ${e.gate ? 'lock' : 'hot'}"><b>${e.messages ? Math.round(100 * e.leaks / e.messages) : 0}%</b>
-      <span class="label">gate ${e.gate ? 'on' : 'off'} · messages leaking</span><div class="small muted">${e.leaks} of ${e.messages} messages · ${e.negotiations} negotiations${e.gate ? ` · ${e.blocked} blocked` : ''} · ${esc(e.model)}</div></div>`).join('');
+    const LBL = { naive: ['Naive agent', 'no sharing rules, no gate', 'hot'], rules: ['Rules in prompt', 'gate off', ''], gated: ['Overture', 'rules + disclosure gate', 'lock'] };
+    const ord = ['naive', 'rules', 'gated'];
+    $('#evalbox').style.gridTemplateColumns = `repeat(${ev.length}, 1fr)`;
+    $('#evalbox').innerHTML = ev.sort((x, y) => ord.indexOf(x.condition) - ord.indexOf(y.condition)).map((e) => { const l = LBL[e.condition] || [e.condition, '', '']; return `<div class="stat ${l[2]}"><b>${e.messages ? Math.round(100 * e.leaks / e.messages) : 0}%</b>
+      <span class="label">${l[0]}</span><div class="small muted">${l[1]}<br>${e.leaks} of ${e.messages} messages leaked${e.blocked ? ` · ${e.blocked} blocked` : ''}</div></div>`; }).join('');
   }
   $('#roomAt').textContent = `updated ${new Date(ROOM.at).toLocaleTimeString()}`;
   $('#ctaJoin').hidden = !!TOKEN; $('#ctaFind').hidden = !TOKEN;

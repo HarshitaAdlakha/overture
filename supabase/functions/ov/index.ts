@@ -219,7 +219,7 @@ Deno.serve(async (req) => {
       // Eval runs (persist: false) are not stored: an ungated transcript may contain planted secrets.
       if (body.persist === false) {
         const [a, b] = await Promise.all([card(aId), card(bId)]);
-        return json(await negotiate(ask, a, b, { gate }));
+        return json(await negotiate(ask, a, b, { gate, naive: body.naive === true && !gate }));
       }
       return json(await runPair(aId, bId, {}, true));
     }

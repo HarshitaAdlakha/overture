@@ -88,9 +88,11 @@ create table if not exists ov_decisions (
 );
 
 -- Leak evaluation runs (scripts/eval.mjs): gate on vs off on planted canaries.
+alter table if exists ov_eval_runs add column if not exists condition text not null default 'rules';
 create table if not exists ov_eval_runs (
   id          bigint generated always as identity primary key,
   gate        boolean not null,
+  condition   text not null default 'rules',
   negotiations int not null,
   messages    int not null,
   leaks       int not null,
@@ -137,9 +139,9 @@ as $$
         'messages', (select count(*) from ov_turns),
         'blocked', (select count(*) from ov_gate_log),
         'protected_items', (select count(*) from ov_items where policy <> 'share')),
-    'eval', (select coalesce(jsonb_agg(e order by e.gate), '[]') from (
-        select distinct on (gate) gate, negotiations, messages, leaks, blocked, model, created_at
-        from ov_eval_runs order by gate, created_at desc) e),
+    'eval', (select coalesce(jsonb_agg(e order by e.leaks desc), '[]') from (
+        select distinct on (condition) condition, gate, negotiations, messages, leaks, blocked, model, created_at
+        from ov_eval_runs order by condition, created_at desc) e),
     'at', now());
 $$;
 revoke all on function ov_room(int) from public;
