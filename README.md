@@ -24,7 +24,8 @@ Built by **Paras Adlakha** and **Harshita Adlakha** for the **Anything Applied A
 
 | | |
 |---|---|
-| **Event** | Anything Applied Agentic Hackathon, hackathons.team, Entrepreneurs First, 501 Folsom St, San Francisco |
+| **Event** | Anything Applied Agentic Hackathon, presented by [Hackathons.team](https://hackathons.team), at Entrepreneurs First (venue partner), 501 Folsom St, San Francisco |
+| **Hosts** | Julius Olsson, Geart Ferhati, Sean Chiu, Sophie R |
 | **Date** | Saturday 7 November 2026, 9 AM–8 PM PST (we built remotely, from India) |
 | **Brief** | *Build an agent that does real work.* "The best demos won't just run. They'll make something real happen between two people, live, in the room." |
 | **Theme** | AI-native professional social. We took challenge 5, **Your Agent, My Agent**: *what happens when AI agents start networking on our behalf?* It also covers 1 (Serendipity Engine) and 2 (The Knowledge That Finds You) |
@@ -375,6 +376,12 @@ test/                                             23 unit tests
 - **Intro email is a `mailto:`.** Both people get a ready-to-send email and a calendar link; sending it server-side needs an email provider.
 - **Polling, not Realtime.** RLS with no policies rules out Supabase Realtime on these tables; a broadcast channel from the function would replace polling.
 - **Next:** publish each agent as an **A2A agent card** so agents from other platforms can negotiate behind the same gate; event-organiser mode wired to check-in; per-person rate limits.
+
+---
+
+## Thank you
+
+To the hosts, **Julius Olsson, Geart Ferhati, Sean Chiu and Sophie R**, and to **[Hackathons.team](https://hackathons.team)** for a one-day, builder-first hackathon that welcomed remote teams. To **Entrepreneurs First** for hosting it at 501 Folsom St. And to the judges and every team that shipped something real on the day.
 
 ---
 

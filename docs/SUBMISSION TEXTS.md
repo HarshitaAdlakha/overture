@@ -91,10 +91,36 @@ Images: `docs/img/linkedin-cover.png`, `linkedin-eval.png`, `linkedin-graph.png`
 >
 > My background is in system dynamics, and this felt like a feedback-loop design problem: who is allowed to learn what, and when.
 >
+> 🙏 Thank you to the hosts, Julius Olsson, Geart Ferhati, Sean Chiu and Sophie R, and to Hackathons.team for a day of pure building. Thank you to Entrepreneurs First for the venue, and for welcoming remote teams like ours.
+>
 > ▶️ Try it: https://harshitaadlakha.github.io/overture/app/
 > 💻 Code: https://github.com/HarshitaAdlakha/overture
 >
-> #AIAgents #AgenticAI #Hackathon #SanFrancisco #Privacy #BuildInPublic #WomenInTech
+> #AIAgents #AgenticAI #Hackathon #SanFrancisco #Privacy #BuildInPublic #WomenInTech #HackathonsTeam #EntrepreneursFirst
+
+**Tags to add when posting** (type @ and pick the profile or page): Julius Olsson, Geart Ferhati, Sean Chiu, Sophie R, Hackathons.team, Entrepreneurs First. On X, tag the hosts from the X links on the Luma page.
+
+## Event post (LinkedIn, team voice)
+
+Images: `linkedin-cover.png`, `linkedin-graph.png`. Post from Harshita's account.
+
+> One day. Build an agent that does real work, and make something real happen between two people.
+>
+> That was the brief at the Anything Applied Agentic Hackathon in San Francisco on 7 November, hosted by Hackathons.team at Entrepreneurs First. Strong remote teams were welcome, so we built from India.
+>
+> 🛠️ We built Overture: your agent meets their agent before you do.
+>
+> 🤝 Every attendee gets an agent, and the agents negotiate intros with each other
+> 🔒 A disclosure gate in code keeps private context private
+> ✅ Nothing is shared until both people say yes
+> 🧪 Naive agents leaked planted secrets in 38.6% of messages; Overture, 0%
+>
+> ▶️ https://harshitaadlakha.github.io/overture/app/
+> 💻 https://github.com/HarshitaAdlakha/overture
+>
+> 🙏 Huge thanks to the hosts, Julius Olsson, Geart Ferhati, Sean Chiu and Sophie R, to Hackathons.team for running a builder-first day, to Entrepreneurs First for the venue, and to the judges and every team who shipped.
+>
+> #Hackathon #AIAgents #AgenticAI #SanFrancisco #HackathonsTeam #EntrepreneursFirst #BuildInPublic
 
 ## LinkedIn post (Paras, personal)
 
@@ -111,14 +137,16 @@ Images: `linkedin-eval.png`, `linkedin-graph.png`.
 > 📈 Match on two-way fit × *moderate* unexpectedness. LinkedIn's 20M-person experiments found an inverted U for weak ties, so we peak at 0.65, not at "total stranger."
 > 🚫 An agent that tries prompt injection gets refused, not proposed.
 >
+> Thank you to Julius Olsson, Geart Ferhati, Sean Chiu and Sophie R for hosting the Anything Applied Agentic Hackathon, to Hackathons.team, and to Entrepreneurs First for the venue.
+>
 > ▶️ https://parasadlakha.github.io/overture/app/
 > 💻 https://github.com/ParasAdlakha/overture
 >
-> #AIAgents #LLM #Privacy #Supabase #Hackathon #SystemsEngineering
+> #AIAgents #LLM #Privacy #Supabase #Hackathon #SystemsEngineering #HackathonsTeam
 
 ## X post (under 280 characters)
 
-> Built Overture at the Anything Applied Agentic Hackathon 🤝
+> Built Overture at the Anything Applied Agentic Hackathon (Hackathons.team at Entrepreneurs First, SF) 🤝
 >
 > Your agent negotiates intros with everyone else's agent, a disclosure gate keeps your secrets (naive agents leaked 38.6%, ours 0%), and nothing happens until both humans say yes.
 >
