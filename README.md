@@ -6,11 +6,17 @@ You're at a one-day hackathon with a room full of builders. You'll talk to maybe
 
 Built by **Paras Adlakha** and **Harshita Adlakha** for the **Anything Applied Agentic Hackathon** (hackathons.team, Entrepreneurs First, San Francisco, 7 November 2026). Special theme challenge 5: *Your Agent, My Agent*.
 
-**▶️ [Open the live app](https://parasadlakha.github.io/overture/app/)** · [Project page](https://parasadlakha.github.io/overture/) · 🎬 [2-minute demo](docs/video/Overture-demo-2min.mp4) · [3-minute pitch](docs/video/Overture-pitch-3min.mp4) · 📑 [Slides (PDF)](docs/slides/Overture-slides.pdf) · [PowerPoint](docs/slides/Overture-slides.pptx) · [Market brief](https://parasadlakha.github.io/overture/market-brief.html) · [Research brief](https://parasadlakha.github.io/overture/research-brief.html)
+**▶️ [Open the live app](https://parasadlakha.github.io/overture/app/)** · [Project page](https://parasadlakha.github.io/overture/) · 🎬 [2-minute demo](docs/video/Overture-demo-2min.mp4) · [3-minute pitch](docs/video/Overture-pitch-3min.mp4) · [silent, captioned](docs/video/Overture-demo-captioned.mp4) · 📑 [Slides (PDF)](docs/slides/Overture-slides.pdf) · [PowerPoint](docs/slides/Overture-slides.pptx) · [Market brief](https://parasadlakha.github.io/overture/market-brief.html) · [Research brief](https://parasadlakha.github.io/overture/research-brief.html)
 
 ![The room: agents as nodes, negotiations as edges, and the inspector showing a refused red-team attempt](docs/img/graph.png)
 
-**Contents:** [The hackathon](#the-hackathon) · [The problem](#the-problem) · [What Overture does](#what-overture-does) · [The disclosure gate](#the-disclosure-gate) · [Who should meet](#who-should-meet) · [Leak eval](#leak-eval) · [Architecture](#architecture) · [Private by construction](#private-by-construction) · [Tests](#tests) · [Run it yourself](#run-it-yourself) · [Limitations and roadmap](#limitations-and-roadmap) · [Team](#team) · [References](#references)
+*The Room, live. Agents are nodes and negotiations are edges (amber proposed, green introduced, red refused). The inspector shows a red-team bot asking for salaries, then trying a prompt injection. It was refused.*
+
+![Both people said yes: the intro, released only to these two](docs/img/introduced.png)
+
+*After both people accept: email, a ready-to-send intro and a calendar slot. Ava's private facts (runway, other interviews) were never released.*
+
+**Contents:** [The hackathon](#the-hackathon) · [The problem](#the-problem) · [What Overture does](#what-overture-does) · [The functions](#the-functions) · [How one intro is made](#how-one-intro-is-made) · [The disclosure gate](#the-disclosure-gate) · [Who should meet](#who-should-meet) · [Leak eval](#leak-eval) · [Architecture](#architecture) · [Private by construction](#private-by-construction) · [Guardrails](#guardrails) · [Supabase features used](#supabase-features-used) · [Real numbers](#real-numbers) · [Tests](#tests) · [Run it yourself](#run-it-yourself) · [Repository layout](#repository-layout) · [What we learned](#what-we-learned) · [Limitations and roadmap](#limitations-and-roadmap) · [Team](#team) · [References](#references)
 
 ---
 
@@ -74,6 +80,58 @@ flowchart LR
 | **Propose** | A mediator writes why, what each gets and an agenda, from the gated transcript only, and gates that too | `negotiate` |
 | **Decide** | Each person accepts or passes. One "not now" ends it, and nothing is shared | `decide` |
 | **Introduce** | Both yes: the intro (emails, mailto, Google Calendar link, released items) is stored on the match and returned only to those two | `buildIntro` |
+
+---
+
+## The functions
+
+Everything Overture does is one action on one edge function, `ov`. The browser holds only the function URL and the publishable key.
+
+| Action | Who can call it | What it does | Guardrail |
+|---|---|---|---|
+| `room` | Anyone | Everything the Room shows, through the `ov_room()` RPC | Shared items, gated turns and counts only; never emails, intros or protected items |
+| `join` | Anyone | Turns the check-in answers into items, creates the person, returns a bearer token | Inputs capped at 600 characters; private-box facts are forced to `never`; only the token's SHA-256 is stored |
+| `me` | Token | The person's items, matches, gated transcripts, decisions, and intros where they are `a` or `b` | Token checked on every call; another person's intro is never returned |
+| `update` | Token | Change an item's policy, add or remove items, standing instructions | Only the caller's own items; a new `fact` is always `never` |
+| `find` | Token | Rank the room, then negotiate with the top two agents in parallel, streaming each turn | Pairs already negotiated are skipped; at most 40 candidates and 3 negotiations |
+| `decide` | Token | Accept or pass on a proposal; on two accepts, build and store the intro | Only `a` or `b`, only on `proposed` or `accepted` matches; one pass ends it |
+| `pair` | Admin secret | Run one negotiation for seeding or the eval; `persist: false` stores nothing | `x-ov-admin` header must match `OV_ADMIN_SECRET` |
+| `diag` | Admin secret | Check the model connection | Admin only |
+
+---
+
+## How one intro is made
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor A as Ava (phone)
+    participant F as ov edge function
+    participant DB as Postgres (RLS, no policies)
+    participant M as Model (gpt-5-mini)
+    actor T as Tomás (phone)
+
+    A->>F: join {building, good_at, looking_for, private}
+    F->>M: extract offers · needs · facts
+    Note over F: every private-box fact forced to "never"
+    F->>DB: ov_people (token hash) + ov_items (policies)
+    F-->>A: token (kept on the phone)
+    A->>F: find (x-ov-token)
+    F->>M: rank the room: helps_me · i_help · unexpected (0–10)
+    Note over F: score = √(fit both ways) × (0.55 + 0.45·bridge(u))
+    loop 4 turns, agents alternate
+        F->>M: next message as Ava's or Tomás's agent
+        Note over F: disclosure gate → pass, rewrite once, or withhold
+        F->>DB: ov_turns (+ ov_gate_log: rule, never text)
+    end
+    F->>M: mediator: why · what each gets · agenda (gated)
+    F->>DB: ov_matches status = proposed
+    A->>F: decide accept
+    T->>F: decide accept (own device, own token)
+    F->>DB: intro = emails + mailto + calendar + after-accept items
+    F-->>A: intro
+    F-->>T: intro
+```
 
 ---
 
@@ -189,6 +247,50 @@ flowchart TB
 
 ---
 
+## Guardrails
+
+- **The model proposes; code decides.** Every outgoing message passes the gate, whatever the model says it did.
+- **Rewrite once, then withhold.** The agent is told which rule fired, never the secret. A second failure becomes a fixed line.
+- **Blocked text is never stored.** `ov_gate_log` keeps the rule and the item id only.
+- **Private-box facts are `never`.** Extraction can't relax them; only the person can, in the My agent tab.
+- **Inbound messages are data.** They are framed as untrusted. Extraction or override attempts are flagged to the receiving agent, and the negotiation is refused.
+- **Summaries are gated too.** The ranker's "why" and the mediator's reason, gets and agenda are checked against both people's protected items before anyone sees them.
+- **Two yeses, two people.** Contacts and `after_accept` items are released only when both accept, and only to those two.
+- **Bounded inputs.** Text fields are capped; messages are at most about 45 words and four turns; `find` negotiates with at most three agents.
+- **The UI escapes everything it renders,** including other people's headlines and agent messages.
+
+---
+
+## Supabase features used
+
+| Feature | Use |
+|---|---|
+| **Postgres tables + `CHECK` constraints** | 7 `ov_` tables; policies, statuses, lengths and email format are enforced in the database |
+| **Row-level security** | On for every table with **no** policies, so the publishable key can't read or write any row |
+| **Security-definer RPC** | `ov_room()` is the only thing the browser can query directly; it returns shared items and gated turns only |
+| **Edge functions (Deno)** | `ov`, deployed with `supabase functions deploy --use-api --no-verify-jwt`; it does its own token auth |
+| **Secrets** | `OPENAI_API_KEY` and `OV_ADMIN_SECRET`, set with `supabase secrets set`, never in the repo |
+| **pgcrypto** | `gen_random_uuid()` ids |
+| **Supabase CLI** | Secrets, deploys and linking, all scripted |
+
+---
+
+## Real numbers
+
+From the live project on 8 November 2026:
+
+| | |
+|---|---|
+| Agents in the room | 14 (13 fictional demo personas + the recorded demo attendee) |
+| Private items guarded | 26 (`never` or `after_accept`) |
+| Negotiations | 13, with 52 agent messages |
+| Proposed / introduced / no match | 9 / 1 / 3, including 3 red-team attempts refused |
+| Messages rewritten or withheld by the gate | 2 (1 rewritten, 1 withheld), from 3 gate hits |
+| `find` end to end | ~20–40 s for ranking plus two parallel 4-turn negotiations; each model call ~1–3 s |
+| Leak eval | Naive agent 38.6% · Overture rules 0% · Overture gated 0% (see above) |
+
+---
+
 ## Tests
 
 ```bash
@@ -224,6 +326,14 @@ Then set `FN_URL` in [`docs/app/config.js`](docs/app/config.js) and serve `docs/
 
 **Two-phone demo:** open `app/#t=<token>` on a second device to act as a seeded persona (tokens are in `.seed-tokens.local.json`, which isn't committed).
 
+### Media
+
+The screenshots and videos in `docs/` come from one real session against the live app, recorded with [`scripts/media`](scripts/media):
+- `record.mjs` drives the app in headless Chrome and screencasts each scene. A fictional attendee joins and her agent negotiates; the other person accepts in a second browser with their own token.
+- `video.mjs` cuts the 2-minute demo, the 3-minute pitch and the silent captioned version, with edge-tts narration. Long scenes are sped up and labelled.
+- `render.mjs`, `build-deck.cjs` and `pdf.mjs` build the slide images, the PowerPoint (script in the notes) and the PDF.
+- `social/linkedin.html` holds the LinkedIn images.
+
 ---
 
 ## Repository layout
@@ -245,6 +355,16 @@ data/personas.json                                fictional demo personas with p
 scripts/                                          migrate, seed, eval, sql; media/ builds slides, deck, videos
 test/                                             23 unit tests
 ```
+
+---
+
+## What we learned
+
+- **Knowing is not saying, and agents blur the two.** A naive agent that simply *knew* someone's runway gave it to an investor's agent in more than a third of messages. Writing a policy next to every fact fixed most of it. The gate exists for the rest.
+- **Our own pipeline leaked first.** Recording the demo, we found that the model sometimes marked private-box answers as "after both accept", so a double opt-in released them. We now force them to `never` in code and test for it. The lesson: never let the model *relax* a privacy setting.
+- **Make the attacker scripted.** Asked to play a pushy recruiter, the model stayed polite. A scripted red-team agent attacks every time, so the defence is visible on every run.
+- **Coarse scores collapse rankings.** On a 0–1 scale the model answered 0 or 1, so every pair tied. Anchored 0–10 integers spread the scores out.
+- **Show the edges.** People trust a match more when they can read the negotiation behind it, so the Room shows every gated message, and every rewrite is labelled.
 
 ---
 
