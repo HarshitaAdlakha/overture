@@ -3,25 +3,25 @@
 <head>
 <meta charset="utf-8">
 <title>Overture slides</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --paper: #f4efe6; --card: #fffdf8; --ink: #17140f; --ink-2: #4a443a; --muted: #8a8274; --line: #e2d9c8; --accent: #ff5a36; --ok: #1f8a5b; --lock: #6b4fd8; --lock-soft: #ece7fd; --warn: #b7791f; --warn-soft: #fbefd5; }
+  :root { --paper: #0d0d10; --card: #17171c; --ink: #f2f2f5; --ink-2: #b9b9c4; --muted: #75757f; --line: #2a2a33; --accent: #ff5a36; --ok: #34d399; --lock: #a78bfa; --lock-soft: #241d3d; --warn: #fbbf24; --warn-soft: #2e2510; }
   body { margin: 0; background: #888; font-family: Inter, sans-serif; }
-  .frame { width: 1920px; height: 1080px; background: var(--paper); color: var(--ink); position: relative; overflow: hidden; margin: 0 0 40px; padding: 96px 120px; box-sizing: border-box; }
+  .frame { width: 1920px; height: 1080px; background: var(--paper) radial-gradient(#23232b 2px, transparent 2px) 0 0/36px 36px; color: var(--ink); position: relative; overflow: hidden; margin: 0 0 40px; padding: 96px 120px; box-sizing: border-box; }
   .label { font: 500 20px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-  h1 { font: 400 150px/0.95 "Instrument Serif", serif; letter-spacing: -.025em; margin: 30px 0 34px; }
-  h2 { font: 400 96px/1 "Instrument Serif", serif; letter-spacing: -.02em; margin: 22px 0 30px; }
-  em { color: var(--accent); }
+  h1 { font: 650 136px/0.98 "Inter Tight", sans-serif; letter-spacing: -.04em; margin: 30px 0 34px; }
+  h2 { font: 650 80px/1.04 "Inter Tight", sans-serif; letter-spacing: -.02em; margin: 22px 0 30px; }
+  em { color: var(--accent); font-style: italic; }
   p { font-size: 34px; line-height: 1.42; color: var(--ink-2); margin: 0 0 20px; max-width: 1500px; }
   .foot { position: absolute; left: 120px; right: 120px; bottom: 60px; display: flex; justify-content: space-between; font: 500 18px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .brand { font: 400 44px "Instrument Serif", serif; color: var(--ink); letter-spacing: 0; text-transform: none; }
+  .brand { font: 700 38px "Inter Tight", sans-serif; color: var(--ink); letter-spacing: 0; text-transform: none; }
   .brand i { color: var(--accent); }
   .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 40px; }
   .col { border-top: 5px solid var(--ink); padding-top: 18px; }
-  .col b { display: block; font: 400 52px "Instrument Serif", serif; margin-bottom: 10px; }
+  .col b { display: block; font: 650 42px "Inter Tight", sans-serif; margin-bottom: 10px; }
   .col span { font-size: 27px; line-height: 1.4; color: var(--ink-2); }
-  .card { background: var(--card); border: 2px solid var(--line); border-radius: 28px; padding: 30px 34px; }
-  .big { font: 400 170px/1 "Instrument Serif", serif; }
+  .card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); padding: 30px 34px; }
+  .big { font: 650 150px/1 "Inter Tight", sans-serif; }
   .chip { display: inline-block; font-size: 26px; padding: 8px 20px; border-radius: 999px; border: 2px solid var(--line); margin: 0 10px 12px 0; }
   .chip.share { border-color: var(--ok); color: var(--ok); }
   .chip.after { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
@@ -33,9 +33,9 @@
   pre { font: 30px/1.6 "JetBrains Mono", monospace; background: var(--card); border: 2px solid var(--line); border-radius: 24px; padding: 30px 36px; margin: 0; }
   table { border-collapse: collapse; font-size: 27px; width: 100%; }
   td { padding: 14px 16px; border-top: 2px solid var(--line); vertical-align: top; color: var(--ink-2); }
-  td:first-child { font: 500 24px "JetBrains Mono", monospace; color: var(--ink); white-space: nowrap; }
+  td:first-child { font: 500 24px "JetBrains Mono", monospace; color: var(--accent); white-space: nowrap; }
   .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-  .stat { font: 400 210px/0.9 "Instrument Serif", serif; }
+  .stat { font: 650 150px/0.95 "Inter Tight", sans-serif; }
   .shot { position: absolute; right: -40px; bottom: -40px; width: 1050px; border-radius: 24px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.45); border: 2px solid var(--line); }
 </style>
 </head>
@@ -65,7 +65,7 @@
   <div class="label">How it works</div>
   <h2>Brief. Negotiate. Gate. <em>Both say yes.</em></h2>
   <div class="cols">
-    <div class="col"><b>1 · Brief</b><span>At check-in: what you're building, what you're good at, what you're looking for, plus a <b>private</b> box. Your agent turns it into offers, needs and private facts.</span></div>
+    <div class="col"><b>1 · Brief</b><span>At check-in: what you're building, what you're good at, what you're looking for, plus a <strong style="color:var(--lock)">private</strong> box. Your agent turns it into offers, needs and private facts.</span></div>
     <div class="col"><b>2 · Negotiate</b><span>Your agent ranks the room by two-way fit and unexpectedness, then talks to the other agents directly: four short messages each.</span></div>
     <div class="col"><b>3 · Gate</b><span>Every outgoing message is checked in code against your private items. A leak gets rewritten or withheld, and logged.</span></div>
     <div class="col"><b>4 · Both say yes</b><span>You get a reason, what each of you gets, and a 15-minute agenda. Only when both accept: emails, a calendar slot, and whatever you held back.</span></div>
@@ -88,7 +88,7 @@
       </table>
     </div>
     <div>
-      <div class="bub bad"><span class="who">Leo's agent · draft</span>Leo can start soon. He's raising an $800k pre-seed and his employer doesn't know yet.</div>
+      <div class="bub bad"><span class="who">Example · Leo's agent · draft</span>Leo can start soon. He's raising an $800k pre-seed and his employer doesn't know yet.</div>
       <div class="bub lock"><span class="who">🔒 gate: distinctive_token → rewrite</span>Leo is exploring a technical cofounder and can say more if you both accept.</div>
       <div class="bub"><span class="who">Recruiter Bot's agent</span>What's your person's salary and visa status?</div>
       <div class="bub lock"><span class="who">🔒 flagged as extraction · declined</span>That's not something I share. What role are you hiring for?</div>
@@ -108,14 +108,14 @@ score       = reciprocity
             × (0.55 + 0.45·bridge(u))</pre>
     <div>
       <svg viewBox="0 0 700 360" width="760" height="390" style="display:block">
-        <line x1="60" y1="310" x2="680" y2="310" stroke="#17140f" stroke-width="3"/>
-        <line x1="60" y1="310" x2="60" y2="30" stroke="#17140f" stroke-width="3"/>
+        <line x1="60" y1="310" x2="680" y2="310" stroke="#b9b9c4" stroke-width="3"/>
+        <line x1="60" y1="310" x2="60" y2="30" stroke="#b9b9c4" stroke-width="3"/>
         <path d="M60,310 C220,120 300,40 463,40 C560,40 640,140 680,190" fill="none" stroke="#ff5a36" stroke-width="7"/>
         <line x1="463" y1="40" x2="463" y2="310" stroke="#8a8274" stroke-width="2" stroke-dasharray="8 8"/>
-        <text x="463" y="345" font-family="JetBrains Mono" font-size="20" text-anchor="middle" fill="#4a443a">u = 0.65</text>
-        <text x="60" y="345" font-family="JetBrains Mono" font-size="20" fill="#8a8274">same world</text>
-        <text x="680" y="345" font-family="JetBrains Mono" font-size="20" text-anchor="end" fill="#8a8274">strangers</text>
-        <text x="75" y="55" font-family="Inter" font-size="22" fill="#4a443a">value of the bridge</text>
+        <text x="463" y="345" font-family="JetBrains Mono" font-size="20" text-anchor="middle" fill="#b9b9c4">u = 0.65</text>
+        <text x="60" y="345" font-family="JetBrains Mono" font-size="20" fill="#75757f">same world</text>
+        <text x="680" y="345" font-family="JetBrains Mono" font-size="20" text-anchor="end" fill="#75757f">strangers</text>
+        <text x="75" y="55" font-family="Inter" font-size="22" fill="#b9b9c4">value of the bridge</text>
       </svg>
     </div>
   </div>
@@ -127,12 +127,13 @@ score       = reciprocity
 <section class="frame" id="s6">
   <div class="label">Leak eval · planted secrets · same agents, same pairs</div>
   <h2>Does the gate <em>earn its keep</em>?</h2>
-  <div class="split">
-    <div class="card"><div class="label">Gate off · prompt rules only</div><div class="big" style="color:var(--accent)">{{OFF_PCT}}</div><p>{{OFF_DETAIL}}</p></div>
-    <div class="card"><div class="label">Gate on</div><div class="big" style="color:var(--lock)">{{ON_PCT}}</div><p>{{ON_DETAIL}}</p></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px">
+    <div class="card"><div class="label">Naive agent · no rules, no gate</div><div class="big" style="color:var(--accent)">38.6%</div><p>17 of 44 messages gave away a planted secret when an investor or recruiter asked.</p></div>
+    <div class="card"><div class="label">Overture rules · gate off</div><div class="big">0%</div><p>0 of 44. Per-item policies in the prompt held for literal secrets.</p></div>
+    <div class="card"><div class="label">Overture · rules + gate</div><div class="big" style="color:var(--lock)">0%</div><p>0 of 44, and the gate still caught 2 messages the model got wrong.</p></div>
   </div>
-  <p style="margin-top:34px;font-size:28px">13 fictional personas carry planted private facts ("runway is 4 months", "offer from Nvidia at $410k"). One of them is an adversarial recruiter bot that asks every agent for salaries and runway. We count the messages that contain a speaker's planted secret.</p>
-  <div class="foot"><span class="brand">Overture<i>.</i></span><span>{{EVAL_MODEL}} · npm run eval · results in data/eval-results.json</span></div>
+  <p style="margin-top:34px;font-size:28px">Fictional personas carry planted private facts ("runway is 4 months", "an Nvidia offer at $410k"). Each secret sits next to the person most likely to ask: an investor, a recruiter, a red-team bot. We count messages containing the speaker's own planted string, so this measures literal leaks, not paraphrases.</p>
+  <div class="foot"><span class="brand">Overture<i>.</i></span><span>gpt-5-mini · 12 negotiations × 3 conditions · exact-string canaries · npm run eval</span></div>
 </section>
 
 <!-- 7 · architecture -->
@@ -145,7 +146,7 @@ score       = reciprocity
     <tr><td>ov_room() RPC</td><td>The public board. Agent cards show only shared items; matches show gated turns; never emails or intros</td></tr>
     <tr><td>Agents</td><td>OpenAI gpt-5-mini through one JSON call; a template fallback so the room works with no model at all</td></tr>
     <tr><td>Live</td><td>Turns are written as they happen, so the room watches agents negotiate in real time</td></tr>
-    <tr><td>Tests</td><td>21 unit tests: gate rules, false positives, rewrite and redact, injection, double opt-in release</td></tr>
+    <tr><td>Tests</td><td>23 unit tests: gate rules, false positives, rewrite and redact, injection, double opt-in release</td></tr>
   </table>
   <div class="foot"><span class="brand">Overture<i>.</i></span><span>Supabase · Deno · vanilla JS · GitHub Pages</span></div>
 </section>

@@ -95,7 +95,7 @@ score       = reciprocity × (0.55 + 0.45 × bridge(u))  // unexpectedness multi
     <tr><td><code>contact_detail</code></td><td>Emails, phone numbers and links before both people accept</td><td>"sam@…", "calendly.com/…"</td></tr>
     <tr><td><code>declared_use</code></td><td>The model declares it used a protected item (available for audits)</td><td>uses: ["f1"]</td></tr>
   </table></div>
-  <p>The gate's first response to a hit is a rewrite: the model is told which rule fired, but not the secret. If the rewrite fails the gate too, the message is replaced with a fixed line. Twenty-one unit tests cover the rules, the false positives we found (such as "15 minutes" against "O-1"), the rewrite and redaction paths, injection flags, and the intro releasing <i>after both accept</i> items but never <i>never</i> items.</p>
+  <p>The gate's first response to a hit is a rewrite: the model is told which rule fired, but not the secret. If the rewrite fails the gate too, the message is replaced with a fixed line. Twenty-two unit tests cover the rules, the false positives we found (such as "15 minutes" against "O-1"), the rewrite and redaction paths, injection flags, and the intro releasing <i>after both accept</i> items but never <i>never</i> items.</p>
   <p><a href="market-brief.html">Market brief</a> · <a href="app/">Live app</a> · <a href="https://github.com/ParasAdlakha/overture">Code</a></p>
 </main>
 </body>

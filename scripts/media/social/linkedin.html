@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #444; }
+  .frame { width: 1200px; height: 1200px; background: #0d0d10 radial-gradient(#1f1f27 2px, transparent 2px) 0 0/30px 30px; color: #f2f2f5; font-family: Inter, sans-serif; position: relative; overflow: hidden; padding: 70px; box-sizing: border-box; margin-bottom: 30px; }
+  .label { font: 500 18px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #75757f; }
+  h1 { font: 700 96px/0.98 "Inter Tight", sans-serif; letter-spacing: -.045em; margin: 22px 0 22px; }
+  h2 { font: 650 64px/1.02 "Inter Tight", sans-serif; letter-spacing: -.04em; margin: 18px 0 30px; }
+  em { color: #ff5a36; }
+  p { font-size: 28px; line-height: 1.4; color: #b9b9c4; margin: 0; }
+  .shot { position: absolute; left: 70px; right: 70px; bottom: 120px; border-radius: 22px; border: 2px solid #2a2a33; box-shadow: 0 40px 80px -30px #000; width: calc(100% - 140px); }
+  .foot { position: absolute; left: 70px; right: 70px; bottom: 48px; display: flex; justify-content: space-between; font: 500 18px "JetBrains Mono", monospace; color: #75757f; letter-spacing: .08em; text-transform: uppercase; }
+  .brand { font: 700 34px "Inter Tight", sans-serif; color: #f2f2f5; text-transform: none; letter-spacing: 0; }
+  .brand i { color: #ff5a36; font-style: normal; }
+  .cards { display: grid; gap: 22px; margin-top: 40px; }
+  .card { background: #17171c; border: 2px solid #2a2a33; border-radius: 22px; padding: 26px 30px; display: grid; grid-template-columns: 290px 1fr; align-items: center; gap: 24px; }
+  .card b { font: 700 104px/1 "Inter Tight", sans-serif; letter-spacing: -.04em; }
+  .card span { font-size: 27px; color: #b9b9c4; line-height: 1.35; }
+  .card .k { display: block; font: 500 17px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: #75757f; margin-bottom: 6px; }
+</style></head><body>
+<section class="frame" id="linkedin-cover">
+  <div class="label">Anything Applied Agentic Hackathon · SF · Nov 2026</div>
+  <h1>Your agent meets <em>their agent</em> before you do.</h1>
+  <p>Agents negotiate the intro. A gate keeps your secrets. Nothing happens until both people say yes.</p>
+  <img class="shot" src="../rec/graph.png" style="height:560px;object-fit:cover;object-position:top">
+  <div class="foot"><span class="brand">Overture<i>.</i></span><span>Paras Adlakha · Harshita Adlakha</span></div>
+</section>
+<section class="frame" id="linkedin-eval">
+  <div class="label">Leak eval · planted secrets · same 12 negotiations</div>
+  <h2>Agents that know your secrets <em>say them</em>. Ours don't.</h2>
+  <div class="cards">
+    <div class="card"><b style="color:#ff5a36">38.6%</b><span><span class="k">Naive agent</span>of messages gave away a planted secret when an investor or recruiter asked</span></div>
+    <div class="card"><b>0%</b><span><span class="k">Overture rules · gate off</span>a policy per fact: share, after both accept, never</span></div>
+    <div class="card"><b style="color:#a78bfa">0%</b><span><span class="k">Overture · rules + gate</span>and the gate still caught 2 messages the model got wrong</span></div>
+  </div>
+  <div class="foot"><span class="brand">Overture<i>.</i></span><span>gpt-5-mini · 44 messages per condition</span></div>
+</section>
+<section class="frame" id="linkedin-graph">
+  <div class="label">The room · live</div>
+  <h2>Agents are nodes. <em>Negotiations</em> are edges.</h2>
+  <p>A red-team bot asked every agent for salaries, then tried a prompt injection. It was refused every time.</p>
+  <img class="shot" src="../rec/introduced.png" style="height:640px;object-fit:cover;object-position:top">
+  <div class="foot"><span class="brand">Overture<i>.</i></span><span>parasadlakha.github.io/overture</span></div>
+</section>
+</body></html>

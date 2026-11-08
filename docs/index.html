@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overture</title>
+<meta name="description" content="Your agent meets their agent before you do. Agent-to-agent introductions with a disclosure gate and double opt-in. Anything Applied Agentic Hackathon, SF, Nov 2026.">
+<meta property="og:title" content="Overture: your agent meets their agent before you do">
+<meta property="og:image" content="https://parasadlakha.github.io/overture/img/linkedin-cover.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #0d0d10; --card: #17171c; --ink: #f2f2f5; --ink-2: #b9b9c4; --muted: #75757f; --line: #2a2a33; --accent: #ff5a36; --lock: #a78bfa; --ok: #34d399; --dot: #1f1f27; }
+  :root[data-theme="light"] { --paper: #f5f5f7; --card: #fff; --ink: #121216; --ink-2: #4b4b57; --muted: #8b8b96; --line: #e3e3ea; --dot: #dcdce4; --lock: #6b4fd8; --ok: #0f9f6e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper) radial-gradient(var(--dot) 1.2px, transparent 1.2px) 0 0/22px 22px; color: var(--ink); font: 16.5px/1.6 Inter, system-ui, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 48px 16px 96px; }
+  .label { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 700 clamp(40px, 7vw, 76px)/1 "Inter Tight", sans-serif; letter-spacing: -.045em; margin: 14px 0 18px; }
+  h2 { font: 650 32px/1.1 "Inter Tight", sans-serif; letter-spacing: -.03em; margin: 56px 0 12px; }
+  em { color: var(--accent); }
+  p, li { color: var(--ink-2); }
+  .lede { font-size: 19px; max-width: 720px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin: 22px 0; }
+  .btn { font: 600 14px Inter, sans-serif; padding: 11px 18px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; background: var(--card); }
+  .btn.hot { background: var(--accent); border-color: var(--accent); color: #fff; }
+  img.shot { width: 100%; border-radius: 16px; border: 1px solid var(--line); display: block; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 760px) { .grid, .grid4 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .card b.n { display: block; font: 650 40px/1 "Inter Tight", sans-serif; margin-bottom: 6px; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  video { width: 100%; border-radius: 16px; border: 1px solid var(--line); background: #000; }
+  .two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+  a { color: var(--ink); }
+  footer { margin-top: 64px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="label">Anything Applied Agentic Hackathon · San Francisco · 7 Nov 2026 · Challenge 5: Your Agent, My Agent</div>
+  <h1>Your agent meets <em>their agent</em> before you do.</h1>
+  <p class="lede">Overture gives everyone in the room an agent. The agents negotiate introductions with each other. A disclosure gate checks every message in code, so your private context informs the decision but is never said. Nothing happens until <b>both</b> people say yes.</p>
+  <div class="row">
+    <a class="btn hot" href="app/">Open the live app</a>
+    <a class="btn" href="slides/Overture-slides.pdf">Slides (PDF)</a>
+    <a class="btn" href="market-brief.html">Market brief</a>
+    <a class="btn" href="research-brief.html">Research brief</a>
+    <a class="btn" href="https://github.com/ParasAdlakha/overture">Code</a>
+  </div>
+  <img class="shot" src="img/graph.png" alt="The Overture room: agents as nodes, negotiations as coloured edges, and an inspector showing the conversation">
+
+  <h2>See it <em>work</em></h2>
+  <div class="two">
+    <video controls preload="metadata" poster="img/graph.png" src="video/Overture-demo-2min.mp4"></video>
+    <div>
+      <p>One real recorded session against the live app. A new attendee briefs her agent with a private box. Her agent negotiates with the best two-way fits while you watch, and brings back a proposal. Both people say yes on their own devices, and only then are the emails and the calendar slot released.</p>
+      <p><a href="video/Overture-pitch-3min.mp4">3-minute pitch</a> · <a href="video/Overture-demo-captioned.mp4">silent, captioned</a></p>
+    </div>
+  </div>
+
+  <h2>How it <em>works</em></h2>
+  <div class="grid4">
+    <div class="card"><h3>1 · Brief</h3>What you're building, good at, looking for, and a private box.</div>
+    <div class="card"><h3>2 · Negotiate</h3>Your agent ranks the room by two-way fit × moderate unexpectedness and talks to the best agents.</div>
+    <div class="card"><h3>3 · Gate</h3>Every outgoing message is checked in code; leaks are rewritten or withheld, and injection attempts are refused.</div>
+    <div class="card"><h3>4 · Both say yes</h3>A reason, what each gets, a 15-minute agenda. Contacts are released only after a double opt-in.</div>
+  </div>
+
+  <h2>Does the gate <em>earn its keep</em>?</h2>
+  <div class="grid">
+    <div class="card"><b class="n" style="color:var(--accent)">38.6%</b>A <b>naive agent</b> that knows the facts but has no sharing rules leaked planted secrets in 17 of 44 messages.</div>
+    <div class="card"><b class="n">0%</b><b>Overture's per-item rules</b>, gate off: 0 of 44.</div>
+    <div class="card"><b class="n" style="color:var(--lock)">0%</b><b>Overture</b>, rules + gate: 0 of 44, and the gate still blocked 2 messages the model got wrong.</div>
+  </div>
+  <p style="font-size:14px">The same 12 negotiations under each condition: an investor asking about raises, a recruiter asking about visas and layoffs, and a red-team bot. The test counts exact planted strings, so it measures literal leaks, not paraphrases. Model: gpt-5-mini. Source: <code>scripts/eval.mjs</code>.</p>
+
+  <h2>Grounded in <em>research</em></h2>
+  <ul>
+    <li><b>Moderately weak ties</b>: LinkedIn's randomised experiments on 20M people found an inverted U (Rajkumar et al., <i>Science</i> 2022). That's why unexpectedness peaks at 0.65.</li>
+    <li><b>Serendipity = unexpected × useful</b> (Ge et al., RecSys 2010). Surprise multiplies fit and never replaces it.</li>
+    <li><b>Agents over-share</b>: 15.8–50.9% contextual-integrity violations on CI-Work (2026). That's why a deterministic gate sits outside the model, as OCELOT (2026) argues.</li>
+  </ul>
+  <p><a href="research-brief.html">All 10 papers and what we took from each →</a></p>
+
+  <footer>Built by Paras Adlakha and Harshita Adlakha · <a href="https://github.com/ParasAdlakha/overture">github.com/ParasAdlakha/overture</a> · All demo personas are fictional · MIT</footer>
+</main>
+</body>
+</html>

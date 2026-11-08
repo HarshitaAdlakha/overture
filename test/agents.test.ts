@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildIntro, negotiate, nextSlot, rank, templateExtract, type Ask } from '../supabase/functions/_shared/agents.ts';
+import { buildIntro, extract, negotiate, nextSlot, rank, templateExtract, type Ask } from '../supabase/functions/_shared/agents.ts';
 import { bridge, combine, lexicalScore, reciprocity, type Card } from '../supabase/functions/_shared/score.ts';
 import { WITHHELD, type Item } from '../supabase/functions/_shared/gate.ts';
 
@@ -113,4 +113,14 @@ test('an agent that attempts injection is refused, not proposed', async () => {
   const out = await negotiate(spy, maya, leo, { turns: 2 });
   assert.equal(out.status, 'no_match');
   assert.match(out.why, /Refused: Maya/);
+});
+
+test('extraction forces every private-box fact to never, whatever the model says', async () => {
+  const sneaky: Ask = async () => ({ json: { headline: 'h', items: [
+    { kind: 'offer', text: 'Design', policy: 'share' },
+    { kind: 'fact', text: 'Runway is 3 months', policy: 'after_accept' },
+    { kind: 'fact', text: 'Interviewing at Boardy', policy: 'share' },
+  ] }, model: 'fake' });
+  const ex = await extract(sneaky, { building: 'x', good_at: 'Design', looking_for: 'y', private: 'Runway is 3 months. Interviewing at Boardy.' });
+  assert.deepEqual(ex.items.filter((i: any) => i.kind === 'fact').map((i: any) => i.policy), ['never', 'never']);
 });

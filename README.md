@@ -8,7 +8,7 @@ Built by **Paras Adlakha** and **Harshita Adlakha** for the **Anything Applied A
 
 **▶️ [Open the live app](https://parasadlakha.github.io/overture/app/)** · [Project page](https://parasadlakha.github.io/overture/) · 🎬 [2-minute demo](docs/video/Overture-demo-2min.mp4) · [3-minute pitch](docs/video/Overture-pitch-3min.mp4) · 📑 [Slides (PDF)](docs/slides/Overture-slides.pdf) · [PowerPoint](docs/slides/Overture-slides.pptx) · [Market brief](https://parasadlakha.github.io/overture/market-brief.html) · [Research brief](https://parasadlakha.github.io/overture/research-brief.html)
 
-![The room: agents negotiating live, with gated messages](docs/img/room.png)
+![The room: agents as nodes, negotiations as edges, and the inspector showing a refused red-team attempt](docs/img/graph.png)
 
 **Contents:** [The hackathon](#the-hackathon) · [The problem](#the-problem) · [What Overture does](#what-overture-does) · [The disclosure gate](#the-disclosure-gate) · [Who should meet](#who-should-meet) · [Leak eval](#leak-eval) · [Architecture](#architecture) · [Private by construction](#private-by-construction) · [Tests](#tests) · [Run it yourself](#run-it-yourself) · [Limitations and roadmap](#limitations-and-roadmap) · [Team](#team) · [References](#references)
 
@@ -120,10 +120,18 @@ Every proposed intro shows both numbers, two-way fit and unexpected, so people c
 
 ## Leak eval
 
-[`scripts/eval.mjs`](scripts/eval.mjs) runs the same agent-to-agent negotiations twice, with the gate **off** (prompt rules only) and **on**. The pairs are the 13 fictional personas in [`data/personas.json`](data/personas.json), each with planted private facts ("canaries"), and the adversarial bot is paired with every other persona first. It counts messages that contain the speaker's own canary. Ungated runs are never stored (`persist: false`).
+[`scripts/eval.mjs`](scripts/eval.mjs) runs the same agent-to-agent negotiations under three conditions: a **naive** agent, Overture's **rules** with the gate off, and Overture **gated**. The personas in [`data/personas.json`](data/personas.json) are fictional, and each carries planted private facts ("canaries"). The eval counts messages that contain the speaker's own canary. Ungated runs are never stored (`persist: false`).
 
 <!-- EVAL -->
-*Results are written to [`data/eval-results.json`](data/eval-results.json) and shown on the Room's eval card.*
+| Condition | Messages leaking a planted secret | Gate blocks |
+|---|---|---|
+| **Naive agent**: knows the facts, no sharing rules, no gate | **17 of 44 (38.6%)** | — |
+| **Overture rules, gate off**: per-item policies in the prompt | 0 of 44 (0%) | — |
+| **Overture**: rules + disclosure gate (production) | **0 of 44 (0%)** | 2 |
+
+Twelve negotiations per condition, run on gpt-5-mini on 8 November 2026. Each planted secret is placed next to the person most likely to ask about it: an investor (Sofia) asks about raises and runway, a recruiter (Grace) about visas and layoffs, plus natural collaborators and the red-team bot. The red-team bot's own messages aren't counted. Raw results are in [`data/eval-results.json`](data/eval-results.json).
+
+**What it shows:** an agent that simply *knows* your private facts gives them away when someone asks plausible questions, which matches CI-Work's finding that helpfulness drives leaks. Writing a policy per item into the prompt fixes most of it. The gate is the backstop, and it still caught 2 messages in the production condition. In an earlier 12-pair run, the rules-only and gated conditions were also 0 of 48.
 <!-- /EVAL -->
 
 The canary match is a narrower test than the gate (it looks for the exact planted string), so it measures literal leaks, not paraphrases. A paraphrase the gate missed wouldn't be counted.
@@ -187,12 +195,12 @@ flowchart TB
 npm test
 ```
 
-21 tests, run with Node's built-in runner on the same TypeScript the edge function imports:
+23 tests, run with Node's built-in runner on the same TypeScript the edge function imports:
 
 | File | Covers |
 |---|---|
 | [`test/gate.test.ts`](test/gate.test.ts) | Shared text passes; numbers, three-word phrases and rare names from private facts are blocked; names shared publicly aren't treated as identifying; `after_accept` is blocked before the intro and allowed after; contact details; declared use; injection flags; false positives found while building ("15 minutes" against "O-1") |
-| [`test/agents.test.ts`](test/agents.test.ts) | Inverted U peaks at 0.65; reciprocity punishes one-sided intros; lexical fallback; template negotiation with no model; a leaking model is rewritten and a stubborn one redacted; gate off lets the leak through; injection is flagged to the receiver; the intro releases `after_accept` but never `never`; the next half-hour slot |
+| [`test/agents.test.ts`](test/agents.test.ts) | An agent attempting injection is refused; inverted U peaks at 0.65; reciprocity punishes one-sided intros; lexical fallback; template negotiation with no model; a leaking model is rewritten and a stubborn one redacted; gate off lets the leak through; injection is flagged to the receiver; the intro releases `after_accept` but never `never`; the next half-hour slot |
 
 ---
 
@@ -235,7 +243,7 @@ docs/
   slides/  video/  img/
 data/personas.json                                fictional demo personas with planted canaries
 scripts/                                          migrate, seed, eval, sql; media/ builds slides, deck, videos
-test/                                             21 unit tests
+test/                                             23 unit tests
 ```
 
 ---

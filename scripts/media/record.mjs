@@ -70,22 +70,23 @@ await scene(page, '04-negotiate', async () => {
   const t0 = Date.now();
   while (Date.now() - t0 < 120000) {
     await wait(1500);
-    const done = await page.evaluate(() => location.hash === '#intros');
+    const done = await page.evaluate(() => location.hash === '#intros' || (!BUSY && !!ME?.matches?.length));
     await page.evaluate(() => { const meId = ME?.person?.id; const m = ROOM?.matches.find((x) => x.a === meId); if (m && SEL !== m.id) select(m.id); window.scrollTo({ top: document.querySelector('.graphwrap')?.offsetTop - 70 }); });
     if (done) break;
   }
   await wait(1500);
 });
 
-let other = null;
+let other = null, pickId = null;
 await scene(page, '05-intros', async () => {
   await page.evaluate(() => { location.hash = '#intros'; });
   await page.waitForSelector('[data-d=accept]', { timeout: 30000 });
   await wait(2500);
-  other = await page.evaluate(() => ME.matches.find((m) => m.status === 'proposed')?.other?.name);
-  await page.evaluate(() => document.querySelector('.intro details')?.setAttribute('open', ''));
+  const pick = await page.evaluate(() => { const m = ME.matches.find((x) => x.status === 'proposed' && !x.my_decision); return m && { id: m.id, name: m.other.name }; });
+  other = pick.name; pickId = pick.id;
+  await page.evaluate((id) => { const b = document.querySelector(`[data-d=accept][data-m="${id}"]`); b.closest('.intro').querySelector('details')?.setAttribute('open', ''); b.closest('.intro').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, pick.id);
   await wait(3500);
-  await page.click('[data-d=accept]');
+  await page.click(`[data-d=accept][data-m="${pick.id}"]`);
   await wait(3000);
 });
 
@@ -99,9 +100,11 @@ await p2.goto(`${APP}#t=${tok}`, { waitUntil: 'networkidle0' });
 await p2.evaluateHandle('document.fonts.ready');
 await wait(2000);
 await scene(p2, '06-other-accepts', async () => {
-  await p2.waitForSelector('[data-d=accept]', { timeout: 30000 });
+  const sel = `[data-d=accept][data-m="${pickId}"]`;
+  await p2.waitForSelector(sel, { timeout: 30000 });
+  await p2.evaluate((s) => document.querySelector(s).closest('.intro').scrollIntoView({ block: 'start' }), sel);
   await wait(3000);
-  await p2.click('[data-d=accept]');
+  await p2.click(sel);
   await wait(2500);
   await p2.evaluate(() => document.querySelector('.done')?.scrollIntoView({ behavior: 'smooth' }));
   await wait(3500);
@@ -112,6 +115,7 @@ await scene(page, '07-introduced', async () => {
   await wait(2500);
   await page.evaluate(() => document.querySelector('.done')?.scrollIntoView({ behavior: 'smooth', block: 'center' }));
   await wait(5000);
+  await page.screenshot({ path: `${OUT}/introduced.png` });
 });
 
 await scene(page, '08-eval', async () => {

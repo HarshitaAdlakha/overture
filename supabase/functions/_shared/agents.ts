@@ -18,7 +18,7 @@ Return {"headline": string (max 90 chars, what they do, no private facts),
  "items": [{"kind": "offer"|"need"|"fact", "text": string (max 140 chars, first person), "policy": "share"|"after_accept"|"never"}]}.
 - "offer": what they can give others (skills, knowledge, access). Usually "share".
 - "need": what they are looking for. "share" unless sensitive (e.g. job hunting, fundraising details) -> "after_accept".
-- "fact": anything from the PRIVATE answer. Always "never" unless the person clearly says it is fine to share after an intro ("after_accept").
+- "fact": anything from the PRIVATE answer. Always "never".
 Keep the person's own specifics (names, numbers). 2-4 offers, 1-3 needs, every private fact. No duplicates.`;
 
 export function splitLines(t: string): string[] {
@@ -44,8 +44,8 @@ export async function extract(ask: Ask, o: Onboarding) {
       .map((i: any) => ({
         kind: i.kind,
         text: String(i.text).trim().slice(0, 280),
-        // A private answer can never be promoted to "share" by the model.
-        policy: i.kind === 'fact' ? (i.policy === 'after_accept' ? 'after_accept' : 'never') : (['share', 'after_accept', 'never'].includes(i.policy) ? i.policy : 'share'),
+        // Anything from the private box is `never`. Only the person can relax it, in the My agent tab.
+        policy: i.kind === 'fact' ? 'never' : (['share', 'after_accept', 'never'].includes(i.policy) ? i.policy : 'share'),
       }))
       .slice(0, 12);
     if (!items.length) return { ...fallback, model: 'template' };
@@ -233,6 +233,7 @@ export async function negotiate(
     agenda = 'What each of you is building · The specific ask · One next step';
   }
   // Summaries are shown to both people: gate them against both sides' protected items.
+  if (match && !agenda) agenda = 'What each of you is building · The specific ask · One next step';
   const clean = (s: string) => (gate && (checkDisclosure({ message: s, items: a.items }).length || checkDisclosure({ message: s, items: b.items }).length) ? '' : s.slice(0, 300));
   return { turns, blocked, status: match ? 'proposed' : 'no_match', why: clean(why), a_gets: clean(a_gets), b_gets: clean(b_gets), agenda: clean(agenda), model };
 }
@@ -285,8 +286,7 @@ export function buildIntro(a: Person, b: Person, m: { why: string; agenda: strin
     `${b.name}: ${b.headline}`,
     ...released(b).map((t) => `  + now shared: ${t}`),
     '',
-    `Suggested 15 minutes: ${m.agenda}`,
-    '',
+    ...(m.agenda ? [`Suggested 15 minutes: ${m.agenda}`, ''] : []),
     'Both of you said yes. Your agents negotiated this intro; you take it from here.',
     '— Overture',
   ].join('\n');
